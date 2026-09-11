@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AETHERIS NEXUS-IV | Tier IV Enterprise Hyperscale Data Center</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Three.js & OrbitControls CDN for 3D Data Center Room -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              darkest: '#050814',
+              navy: '#0B132B',
+              navyLight: '#111C44',
+              charcoal: '#1C2541',
+              card: 'rgba(14, 23, 56, 0.75)',
+              cardBorder: 'rgba(0, 240, 255, 0.22)',
+              cyan: '#00F0FF',
+              cyanHover: '#38E5FF',
+              blue: '#3A86FF',
+              deepBlue: '#1D4ED8',
+              emerald: '#10B981',
+              amber: '#F59E0B',
+              purple: '#8B5CF6'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          animation: {
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'radar': 'radarSweep 3s linear infinite',
+            'glow-pulse': 'glowPulse 2s ease-in-out infinite alternate',
+            'float': 'floating 6s ease-in-out infinite',
+            'scanline': 'scanline 6s linear infinite',
+          },
+          keyframes: {
+            radarSweep: {
+              '0%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg)' }
+            },
+            glowPulse: {
+              '0%': { boxShadow: '0 0 15px rgba(0, 240, 255, 0.25)' },
+              '100%': { boxShadow: '0 0 35px rgba(0, 240, 255, 0.65)' }
+            },
+            floating: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' }
+            },
+            scanline: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(1000%)' }
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #050814;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1C2B54;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00F0FF;
+    }
+
+    /* Cyber grid overlay */
+    .bg-cyber-grid {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+    }
+
+    /* High-tech glass card */
+    .glass-card {
+      background: linear-gradient(135deg, rgba(17, 28, 68, 0.7) 0%, rgba(11, 19, 43, 0.88) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+    }
+
+    .glass-card-hover {
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover {
+      border-color: rgba(0, 240, 255, 0.55);
+      box-shadow: 0 16px 45px -10px rgba(0, 240, 255, 0.25);
+      transform: translateY(-4px);
+    }
+
+    /* Neon Text Glow */
+    .text-glow-cyan {
+      text-shadow: 0 0 15px rgba(0, 240, 255, 0.7), 0 0 30px rgba(0, 240, 255, 0.3);
+    }
+
+    /* 3D Perspective Card Tilt */
+    .card-3d-wrap {
+      perspective: 1000px;
+    }
+    .card-3d-inner {
+      transition: transform 0.4s ease-out;
+      transform-style: preserve-3d;
+    }
+
+    /* Server LED Blink Animation */
+    .led-blink-fast {
+      animation: ledPulse 0.8s infinite ease-in-out alternate;
+    }
+    .led-blink-slow {
+      animation: ledPulse 1.8s infinite ease-in-out alternate;
+    }
+    .led-blink-random {
+      animation: ledPulse 1.2s infinite ease-in-out alternate;
+    }
+    @keyframes ledPulse {
+      0% { opacity: 0.3; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1.1); }
+    }
+  </style>
+</head>
+
+<body class="bg-brand-darkest text-slate-200 font-sans antialiased selection:bg-brand-cyan selection:text-brand-darkest relative overflow-x-hidden min-h-screen">
+
+  <!-- Ambient Glow Orbs in Background -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 left-1/4 w-[700px] h-[700px] bg-brand-cyan/10 rounded-full blur-[150px]"></div>
+    <div class="absolute top-[35%] -right-48 w-[750px] h-[750px] bg-brand-blue/10 rounded-full blur-[170px]"></div>
+    <div class="absolute -bottom-40 left-1/3 w-[850px] h-[850px] bg-cyan-900/10 rounded-full blur-[190px]"></div>
+    <div class="absolute inset-0 bg-cyber-grid pointer-events-none"></div>
+  </div>
+
+  <!-- TOP ENTERPRISE STATUS / TELEMETRY TICKER -->
+  <div class="relative z-50 bg-[#040816] border-b border-brand-cyan/20 text-xs py-2 px-4 font-mono">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-emerald opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-emerald"></span>
+        </span>
+        <span class="text-slate-300 font-bold tracking-wider">ALL GLOBAL CAMPUSES OPERATIONAL</span>
+        <span class="text-slate-600">|</span>
+        <span class="text-brand-cyan hidden sm:inline-block">UPTIME INSTITUTE TIER IV 2(N+1) CERTIFIED</span>
+      </div>
+
+      <div class="flex items-center gap-4 text-slate-400">
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+          <span>99.999% SLA</span>
+        </div>
+        <div class="hidden md:flex items-center gap-1.5">
+          <i data-lucide="zap" class="w-3.5 h-3.5 text-brand-amber"></i>
+          <span>100% GREEN • PUE &lt; 1.2</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-cyan"></i>
+          <span class="text-slate-200" id="live-utc-clock">UTC 00:00:00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER / NAVIGATION (EXACT SPECIFICATION) -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-brand-navy/85 border-b border-slate-800/90 transition-all duration-300" id="main-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- 1. Logo -->
+        <a href="#" class="flex items-center gap-3.5 group">
+          <div class="relative w-11 h-11 rounded-xl bg-gradient-to-br from-brand-navyLight to-brand-navy border border-brand-cyan/40 flex items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.25)] group-hover:border-brand-cyan transition-all">
+            <div class="absolute inset-0 rounded-xl bg-brand-cyan/10 blur group-hover:bg-brand-cyan/25"></div>
+            <!-- High-Tech Server SVG Icon -->
+            <svg class="w-6 h-6 text-brand-cyan relative z-10 transform group-hover:scale-110 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+              <line x1="6" y1="6" x2="6.01" y2="6"></line>
+              <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              <circle cx="17" cy="6" r="1.5" fill="currentColor" class="text-brand-cyan"></circle>
+              <circle cx="17" cy="18" r="1.5" fill="currentColor" class="text-brand-emerald"></circle>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xl font-extrabold tracking-wider text-white font-sans">AETHERIS</span>
+              <span class="text-xs font-mono font-bold px-1.5 py-0.5 rounded bg-brand-cyan/15 text-brand-cyan border border-brand-cyan/30">TIER-IV</span>
+            </div>
+            <p class="text-[10px] tracking-[0.25em] text-slate-400 font-mono uppercase">ENTERPRISE DATA CENTER</p>
+          </div>
+        </a>
+
+        <!-- 2. Desktop Navigation Links (Services, Infrastructure, Security, Pricing/Solutions, Compliance) -->
+        <nav class="hidden lg:flex items-center gap-7 font-medium text-sm text-slate-300">
+          <a href="#services" class="hover:text-brand-cyan transition-colors">Services</a>
+          <a href="#infrastructure" class="hover:text-brand-cyan transition-colors">Infrastructure</a>
+          <a href="#security" class="hover:text-brand-cyan transition-colors">Security</a>
+          <a href="#pricing" class="hover:text-brand-cyan transition-colors">Pricing/Solutions</a>
+          <a href="#compliance" class="hover:text-brand-cyan transition-colors">Compliance</a>
+          <a href="#virtual-3d-datacenter" class="text-brand-cyan hover:text-white transition-colors flex items-center gap-1.5 font-mono text-xs px-2.5 py-1 rounded bg-brand-cyan/10 border border-brand-cyan/30">
+            <i data-lucide="box" class="w-3.5 h-3.5"></i>
+            <span>3D Room View</span>
+          </a>
+        </nav>
+
+        <!-- 3. Navigation Buttons: 'Portal Login' & 'Request a Quote' -->
+        <div class="hidden sm:flex items-center gap-3">
+          <!-- Portal Login Button -->
+          <button onclick="openModal('portal-modal')" class="px-4 py-2.5 rounded-lg text-xs font-mono font-semibold text-slate-300 hover:text-white border border-slate-700 hover:border-slate-500 bg-slate-900/50 hover:bg-slate-800/70 transition-all flex items-center gap-2">
+            <i data-lucide="lock" class="w-3.5 h-3.5 text-brand-cyan"></i>
+            <span>Portal Login</span>
+          </button>
+          
+          <!-- Request a Quote Button -->
+          <a href="#contact-quote" class="relative group overflow-hidden rounded-lg p-[1px] focus:outline-none">
+            <span class="absolute inset-0 bg-gradient-to-r from-brand-cyan via-blue-500 to-brand-cyan rounded-lg opacity-80 group-hover:opacity-100 transition-opacity blur-[2px]"></span>
+            <span class="relative px-5 py-2.5 rounded-lg bg-brand-darkest text-white text-xs font-mono font-bold tracking-wider flex items-center gap-2 transition-all duration-300 group-hover:bg-opacity-80">
+              <i data-lucide="file-text" class="w-3.5 h-3.5 text-brand-cyan"></i>
+              <span>Request a Quote</span>
+              <i data-lucide="arrow-right" class="w-3 h-3 text-brand-cyan group-hover:translate-x-1 transition-transform"></i>
+            </span>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <div class="lg:hidden flex items-center">
+          <button id="mobile-menu-btn" class="p-2 rounded-lg bg-slate-900/60 border border-slate-700 text-slate-300 hover:text-brand-cyan">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="lg:hidden hidden border-b border-slate-800 bg-brand-navy/95 backdrop-blur-2xl px-4 pt-3 pb-6 space-y-3 font-medium text-sm">
+      <a href="#services" class="block py-2 text-slate-200 hover:text-brand-cyan">Services</a>
+      <a href="#infrastructure" class="block py-2 text-slate-200 hover:text-brand-cyan">Infrastructure</a>
+      <a href="#security" class="block py-2 text-slate-200 hover:text-brand-cyan">Security</a>
+      <a href="#pricing" class="block py-2 text-slate-200 hover:text-brand-cyan">Pricing/Solutions</a>
+      <a href="#compliance" class="block py-2 text-slate-200 hover:text-brand-cyan">Compliance</a>
+      <a href="#virtual-3d-datacenter" class="block py-2 text-brand-cyan font-mono text-xs">3D Data Center Room View</a>
+      <div class="pt-4 border-t border-slate-800 flex flex-col gap-2.5">
+        <button onclick="openModal('portal-modal')" class="w-full py-2.5 rounded-lg text-xs font-mono font-semibold text-slate-300 border border-slate-700 bg-slate-900/60 flex items-center justify-center gap-2">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-brand-cyan"></i> Portal Login
+        </button>
+        <a href="#contact-quote" class="w-full py-2.5 rounded-lg text-center text-xs font-mono font-bold text-white bg-brand-cyan/20 border border-brand-cyan/60 flex items-center justify-center gap-2">
+          <i data-lucide="file-text" class="w-3.5 h-3.5 text-brand-cyan"></i> Request a Quote
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION (EXACT SPECIFICATION) -->
+  <section class="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        
+        <!-- Left Hero Column -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- Real-Time Interactive-Looking Status Badge ('All Systems Operational') -->
+          <div class="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-brand-navyLight/90 border border-brand-cyan/35 text-xs font-mono backdrop-blur-md shadow-[0_0_20px_rgba(0,240,255,0.2)]">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-emerald opacity-80"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-emerald"></span>
+            </span>
+            <span class="font-bold text-white tracking-wide">All Systems Operational</span>
+            <span class="text-slate-600">|</span>
+            <span class="text-brand-cyan font-semibold">Latency: 0.4ms</span>
+            <span class="text-slate-600">|</span>
+            <span class="text-emerald-400 font-semibold">Grid 2(N+1) Synced</span>
+          </div>
+
+          <!-- Bold Headline -->
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12]">
+            Next-Generation Infrastructure for 
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-brand-cyan via-sky-300 to-brand-blue drop-shadow-[0_0_35px_rgba(0,240,255,0.45)]">
+              Mission-Critical Data
+            </span>
+          </h1>
+
+          <!-- Subheadline Emphasizing 99.999% Uptime and Zero Latency -->
+          <p class="text-slate-300 text-lg sm:text-xl font-normal leading-relaxed max-w-2xl">
+            Engineered with a guaranteed <strong class="text-white font-semibold">99.999% Uptime SLA</strong> and <strong class="text-brand-cyan font-semibold">zero-latency</strong> direct interconnects. Dual 2(N+1) fault-tolerant power, liquid immersion cooling up to 120kW per rack, and quantum-ready physical defense for enterprise AI and hyperscale workloads.
+          </p>
+
+          <!-- Two CTA Buttons: 'Explore Services' & 'Schedule a Tour' -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+            <!-- CTA 1: Explore Services -->
+            <a href="#services" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-brand-cyan to-blue-600 text-brand-darkest hover:text-black font-mono font-bold text-sm tracking-wider shadow-[0_0_25px_rgba(0,240,255,0.4)] hover:shadow-[0_0_40px_rgba(0,240,255,0.65)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2.5">
+              <i data-lucide="layers" class="w-4 h-4"></i>
+              <span>Explore Services</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+
+            <!-- CTA 2: Schedule a Tour -->
+            <a href="#virtual-3d-datacenter" class="px-6 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white font-mono font-semibold text-sm border border-slate-700 hover:border-brand-cyan/50 transition-all flex items-center justify-center gap-2.5 backdrop-blur-md">
+              <i data-lucide="box" class="w-4 h-4 text-brand-cyan"></i>
+              <span>Schedule a Tour (3D)</span>
+            </a>
+          </div>
+
+          <!-- Enterprise Badges -->
+          <div class="pt-6 border-t border-slate-800/80 flex flex-wrap items-center gap-3 text-xs font-mono text-slate-400">
+            <span class="flex items-center gap-1.5 text-slate-300">
+              <i data-lucide="badge-check" class="w-4 h-4 text-brand-cyan"></i>
+              <span>Uptime Institute Tier IV</span>
+            </span>
+            <span>•</span>
+            <span class="text-slate-300">SOC 2 Type II</span>
+            <span>•</span>
+            <span class="text-slate-300">ISO 27001</span>
+            <span>•</span>
+            <span class="text-slate-300">PCI-DSS v4.0</span>
+            <span>•</span>
+            <span class="text-emerald-400">LEED Platinum</span>
+          </div>
+
+        </div>
+
+        <!-- Right Hero Interactive Visual: Live Server Rack HUD -->
+        <div class="lg:col-span-5 relative">
+          
+          <div class="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-brand-cyan z-20"></div>
+          <div class="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-brand-cyan z-20"></div>
+
+          <div class="glass-card rounded-2xl p-5 sm:p-6 border border-brand-cyan/30 relative overflow-hidden shadow-2xl">
+            
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-cyan/5 to-transparent h-20 w-full animate-scanline pointer-events-none"></div>
+
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <span class="w-3 h-3 rounded-full bg-brand-emerald animate-pulse"></span>
+                <div>
+                  <div class="font-mono font-bold text-xs text-white tracking-wider">
+                    HALL-ALPHA // AI POD 01 [ONLINE]
+                  </div>
+                  <div class="font-mono text-[10px] text-slate-400">FAULT-TOLERANT 2(N+1) • ACTIVE</div>
+                </div>
+              </div>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/30">
+                LIVE TELEMETRY
+              </span>
+            </div>
+
+            <!-- Simulated High Density Server Racks -->
+            <div class="my-5 bg-[#070D1F] rounded-xl p-4 border border-slate-800 space-y-3 font-mono text-xs">
+              
+              <div class="p-2.5 rounded-lg bg-slate-900/90 border border-brand-cyan/40 relative">
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="cpu" class="w-4 h-4 text-brand-cyan"></i>
+                    <span class="text-white font-bold">NVIDIA H200 GPU POD #14</span>
+                  </div>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">114.2 kW</span>
+                </div>
+                
+                <div class="grid grid-cols-12 gap-1 py-1">
+                  <div class="h-1.5 rounded-full bg-brand-cyan led-blink-fast"></div>
+                  <div class="h-1.5 rounded-full bg-brand-cyan led-blink-slow"></div>
+                  <div class="h-1.5 rounded-full bg-brand-emerald led-blink-fast"></div>
+                  <div class="h-1.5 rounded-full bg-brand-cyan led-blink-random"></div>
+                  <div class="h-1.5 rounded-full bg-brand-cyan led-blink-fast"></div>
+                  <div class="h-1.5 rounded-full bg-brand-emerald led-blink-slow"></div>
+                  <div class="h-1.5 rounded-full bg-brand-cyan led-blink-fast"></div>
+                  <div class="h-1.5 rounded-full bg-brand-cyan led-blink-random"></div>
+                  <div class="h-1.5 rounded-full bg-brand-cyan led-blink-slow"></div>
+                  <div class="h-1.5 rounded-full bg-brand-emerald led-blink-fast"></div>
+                  <div class="h-1.5 rounded-full bg-brand-cyan led-blink-fast"></div>
+                  <div class="h-1.5 rounded-full bg-brand-cyan led-blink-slow"></div>
+                </div>
+
+                <div class="flex items-center justify-between text-[10px] text-slate-400 mt-1">
+                  <span>Inlet Temp: 18.2°C</span>
+                  <span class="text-brand-cyan">Liquid Immersion CDU: Active</span>
+                </div>
+              </div>
+
+              <div class="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800">
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="network" class="w-4 h-4 text-blue-400"></i>
+                    <span class="text-slate-200 font-bold">SPINE SWITCH 800GbE</span>
+                  </div>
+                  <span class="text-[10px] text-slate-400">Zero Packet Loss</span>
+                </div>
+                <div class="flex items-center gap-3 text-[10px]">
+                  <span class="text-slate-300">BUS-A: 230V / 16.4A</span>
+                  <span class="text-slate-300">BUS-B: 230V / 16.1A</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Metric Gauges -->
+            <div class="grid grid-cols-2 gap-3 font-mono">
+              <div class="p-3 rounded-lg bg-brand-navy/80 border border-slate-800 flex items-center gap-3">
+                <div class="p-2 rounded-lg bg-brand-cyan/10 text-brand-cyan">
+                  <i data-lucide="thermometer" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <div class="text-[10px] text-slate-400">COLD AISLE TEMP</div>
+                  <div class="text-sm font-bold text-white"><span id="metric-temp">19.4</span>°C</div>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-lg bg-brand-navy/80 border border-slate-800 flex items-center gap-3">
+                <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
+                  <i data-lucide="activity" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <div class="text-[10px] text-slate-400">PUE REAL-TIME</div>
+                  <div class="text-sm font-bold text-emerald-400"><span id="metric-pue">1.118</span></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LIVE METRICS / KEY STATS BANNER (EXACT SPECIFICATION) -->
+  <section class="border-y border-brand-cyan/25 bg-gradient-to-r from-brand-navy via-[#0A122E] to-brand-navy relative z-20 shadow-[0_0_30px_rgba(0,240,255,0.08)]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center divide-y lg:divide-y-0 lg:divide-x divide-slate-800">
+        
+        <!-- Metric 1: 99.999% Uptime Guarantee -->
+        <div class="space-y-1.5 pt-4 sm:pt-0">
+          <div class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-mono tracking-tight flex items-center justify-center gap-1">
+            <span class="text-brand-cyan text-glow-cyan">99.999</span>%
+          </div>
+          <div class="text-sm font-bold text-slate-100">Uptime Guarantee</div>
+          <div class="text-xs text-slate-400 font-mono">Fault-tolerant dual active feeds SLA</div>
+        </div>
+
+        <!-- Metric 2: 100% Green Energy / PUE < 1.2 -->
+        <div class="space-y-1.5 pt-4 sm:pt-0">
+          <div class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-mono tracking-tight flex items-center justify-center gap-1">
+            <span class="text-brand-emerald">100%</span>
+            <span class="text-xl sm:text-2xl text-slate-400 ml-1">/ &lt;1.2</span>
+          </div>
+          <div class="text-sm font-bold text-slate-100">Green Energy / PUE &lt; 1.2</div>
+          <div class="text-xs text-slate-400 font-mono">Certified renewable hydro & solar power</div>
+        </div>
+
+        <!-- Metric 3: Tier IV Certified -->
+        <div class="space-y-1.5 pt-4 sm:pt-0">
+          <div class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-mono tracking-tight flex items-center justify-center gap-1">
+            <span class="text-brand-cyan">Tier IV</span>
+          </div>
+          <div class="text-sm font-bold text-slate-100">Tier IV Certified</div>
+          <div class="text-xs text-slate-400 font-mono">Uptime Institute Design & Facility</div>
+        </div>
+
+        <!-- Metric 4: 24/7/365 On-site NOC Support -->
+        <div class="space-y-1.5 pt-4 sm:pt-0">
+          <div class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-mono tracking-tight flex items-center justify-center gap-1">
+            <span class="text-brand-cyan">24/7/365</span>
+          </div>
+          <div class="text-sm font-bold text-slate-100">On-site NOC Support</div>
+          <div class="text-xs text-slate-400 font-mono">Expert security & PE engineers on-site</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D DATA CENTER ROOM SHOWCASE (รูปห้อง DATACENTER แบบ 3D & INTERACTIVE 3D VIEWER) -->
+  <section id="virtual-3d-datacenter" class="py-24 relative z-10 bg-brand-darkest border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-14 space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/15 border border-brand-cyan/35 text-brand-cyan text-xs font-mono font-bold uppercase tracking-wider">
+          <i data-lucide="box" class="w-3.5 h-3.5"></i>
+          3D VIRTUAL FACILITY EXPLORER
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Interactive 3D Data Center Showcase
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base">
+          Explore our Tier IV facility in real-time 3D. Inspect high-density AI server halls, 2(N+1) electrical substation vaults, and mission-control operations.
+        </p>
+      </div>
+
+      <!-- Main Interactive 3D WebGL Canvas Viewport -->
+      <div class="glass-card rounded-2xl border border-brand-cyan/40 p-4 sm:p-6 relative overflow-hidden shadow-2xl mb-16">
+        
+        <!-- 3D Viewport Controls & HUD Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-brand-cyan animate-ping"></div>
+            <div>
+              <div class="font-mono text-xs font-bold text-white tracking-wider flex items-center gap-2">
+                <span>3D DIGITAL TWIN // DATA HALL 04</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30">INTERACTIVE WEBGL</span>
+              </div>
+              <div class="text-[11px] text-slate-400 font-mono">
+                Click and drag to rotate 360° • Scroll to zoom • Click server racks to inspect
+              </div>
+            </div>
+          </div>
+
+          <!-- Camera Preset Quick Buttons -->
+          <div class="flex items-center gap-2 font-mono text-xs">
+            <button onclick="setCameraPreset('isometric')" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-brand-cyan text-slate-300 hover:text-white transition-all">
+              Isometric
+            </button>
+            <button onclick="setCameraPreset('aisle')" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-brand-cyan text-slate-300 hover:text-white transition-all">
+              Cold Aisle
+            </button>
+            <button onclick="setCameraPreset('top')" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-brand-cyan text-slate-300 hover:text-white transition-all">
+              Top-Down
+            </button>
+            <button onclick="resetCamera()" class="px-3 py-1.5 rounded-lg bg-brand-cyan/15 border border-brand-cyan/40 text-brand-cyan hover:bg-brand-cyan hover:text-brand-darkest font-bold transition-all">
+              Reset View
+            </button>
+          </div>
+        </div>
+
+        <!-- Canvas Container -->
+        <div class="relative w-full h-[480px] sm:h-[540px] rounded-xl overflow-hidden bg-[#040816] mt-4 border border-slate-800" id="canvas-container">
+          <canvas id="datacenter-3d-canvas" class="w-full h-full cursor-grab active:cursor-grabbing block"></canvas>
+
+          <!-- Floating Telemetry Overlay (Top Right) -->
+          <div class="absolute top-4 right-4 bg-brand-navy/90 border border-brand-cyan/30 rounded-xl p-3 backdrop-blur-md font-mono text-xs space-y-1.5 pointer-events-none hidden sm:block">
+            <div class="text-brand-cyan font-bold flex items-center gap-2">
+              <i data-lucide="radio" class="w-3.5 h-3.5 animate-pulse"></i>
+              <span>CDU FLOW ACTIVE</span>
+            </div>
+            <div class="text-slate-300 text-[11px]">Inlet: 18.4°C • Delta T: 12.6°C</div>
+            <div class="text-slate-400 text-[10px]">Liquid Coolant: Non-Conductive Dielectric</div>
+          </div>
+
+          <!-- Click-to-Inspect HUD Modal Popup in 3D scene -->
+          <div id="rack-inspect-popup" class="absolute bottom-6 left-6 bg-brand-navy/95 border border-brand-cyan rounded-xl p-4 backdrop-blur-xl font-mono text-xs max-w-xs shadow-2xl transition-all duration-300 transform translate-y-0 opacity-100">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-700">
+              <span class="text-white font-bold text-sm" id="popup-rack-id">RACK-GPU-A4</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold">OPTIMAL</span>
+            </div>
+            <div class="space-y-1.5 pt-2 text-slate-300 text-[11px]">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Power Density:</span>
+                <span class="text-brand-cyan font-bold" id="popup-power">98.4 kW</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Cooling Type:</span>
+                <span class="text-white" id="popup-cooling">Direct-to-Chip Liquid</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Uplink:</span>
+                <span class="text-white">800GbE Quantum-2 IB</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom-center interactive hint -->
+          <div class="absolute bottom-3 right-4 bg-slate-950/70 border border-slate-800 px-3 py-1 rounded-full text-[11px] font-mono text-slate-400 pointer-events-none">
+            🖱️ Drag to rotate 3D Room • Scroll to Zoom
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 3 DISTINCT 3D DATA CENTER ROOM SHOWCASE CARDS (รูป 3 ห้อง DATACENTER แบบ 3D) -->
+      <div class="space-y-4 mb-8">
+        <div class="flex items-center justify-between">
+          <h3 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
+            <i data-lucide="layers" class="w-5 h-5 text-brand-cyan"></i>
+            <span>3 Key Tier IV Data Center Environments</span>
+          </h3>
+          <span class="font-mono text-xs text-brand-cyan">3D HIGH-RESOLUTION ARCHITECTURE</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- ROOM 1: High-Density AI & GPU Liquid Cooling Hall -->
+        <div class="card-3d-wrap group">
+          <div class="glass-card rounded-2xl overflow-hidden border border-brand-cyan/25 group-hover:border-brand-cyan transition-all duration-300 flex flex-col h-full shadow-lg">
+            
+            <!-- Room 1 Visual Banner -->
+            <div class="relative h-56 w-full overflow-hidden bg-slate-950">
+              <img 
+                src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80" 
+                alt="High-Density AI & GPU Immersion Hall" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-black/40"></div>
+              
+              <!-- Badge -->
+              <div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-brand-darkest/80 border border-brand-cyan/40 text-brand-cyan font-mono text-[10px] font-bold backdrop-blur-md">
+                ROOM 01 // DATA HALL
+              </div>
+              <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-white">
+                <span class="font-bold flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                  AI & GPU Liquid Immersion
+                </span>
+                <span class="text-emerald-400 font-bold">120 kW/rack</span>
+              </div>
+            </div>
+
+            <!-- Room 1 Content -->
+            <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+              <div class="space-y-2">
+                <h4 class="text-lg font-bold text-white group-hover:text-brand-cyan transition-colors">
+                  High-Density AI Server Hall
+                </h4>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Engineered specifically for NVIDIA Blackwell and H100 clusters. Features direct-to-chip liquid cooling manifolds, closed-loop cold-aisle containment, and reinforced 3,500 kg/m² slab load capacities.
+                </p>
+              </div>
+
+              <div class="pt-3 border-t border-slate-800 text-[11px] font-mono text-slate-400 space-y-1">
+                <div class="flex justify-between">
+                  <span>Thermal Capacity:</span>
+                  <span class="text-white">Up to 120 kW/rack</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Fire Suppression:</span>
+                  <span class="text-brand-cyan">Novec 1230 Clean Agent</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ROOM 2: 2(N+1) Power Substation & Flywheel UPS Vault -->
+        <div class="card-3d-wrap group">
+          <div class="glass-card rounded-2xl overflow-hidden border border-brand-cyan/25 group-hover:border-brand-cyan transition-all duration-300 flex flex-col h-full shadow-lg">
+            
+            <!-- Room 2 Visual Banner -->
+            <div class="relative h-56 w-full overflow-hidden bg-slate-950">
+              <img 
+                src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80" 
+                alt="2N+1 Power Substation & Flywheel UPS Vault" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-black/40"></div>
+              
+              <!-- Badge -->
+              <div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-brand-darkest/80 border border-brand-amber/40 text-brand-amber font-mono text-[10px] font-bold backdrop-blur-md">
+                ROOM 02 // SUBSTATION
+              </div>
+              <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-white">
+                <span class="font-bold flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-brand-amber animate-pulse"></span>
+                  2(N+1) Dual Power Vault
+                </span>
+                <span class="text-brand-cyan font-bold">0ms STS Transfer</span>
+              </div>
+            </div>
+
+            <!-- Room 2 Content -->
+            <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+              <div class="space-y-2">
+                <h4 class="text-lg font-bold text-white group-hover:text-brand-cyan transition-colors">
+                  Power Substation & UPS Vault
+                </h4>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Dual isolated underground 34.5kV utility feeds, rotary flywheel kinetic UPS systems, and MTU diesel generator sets with 72-hour continuous fuel reserves. Zero common single point of failure.
+                </p>
+              </div>
+
+              <div class="pt-3 border-t border-slate-800 text-[11px] font-mono text-slate-400 space-y-1">
+                <div class="flex justify-between">
+                  <span>Redundancy:</span>
+                  <span class="text-white">2(N+1) Dual Active Paths</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Emergency Power:</span>
+                  <span class="text-emerald-400">72-Hour On-site Reserve</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ROOM 3: 24/7 Mission-Control NOC & Biometric Security Center -->
+        <div class="card-3d-wrap group">
+          <div class="glass-card rounded-2xl overflow-hidden border border-brand-cyan/25 group-hover:border-brand-cyan transition-all duration-300 flex flex-col h-full shadow-lg">
+            
+            <!-- Room 3 Visual Banner -->
+            <div class="relative h-56 w-full overflow-hidden bg-slate-950">
+              <img 
+                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80" 
+                alt="24/7 Mission-Control NOC & Biometric Security Center" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-navy via-transparent to-black/40"></div>
+              
+              <!-- Badge -->
+              <div class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-brand-darkest/80 border border-emerald-500/40 text-emerald-300 font-mono text-[10px] font-bold backdrop-blur-md">
+                ROOM 03 // COMMAND NOC
+              </div>
+              <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono text-white">
+                <span class="font-bold flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-brand-emerald animate-pulse"></span>
+                  24/7/365 On-site NOC
+                </span>
+                <span class="text-brand-cyan font-bold">6-Zone Defense</span>
+              </div>
+            </div>
+
+            <!-- Room 3 Content -->
+            <div class="p-6 space-y-3 flex-1 flex flex-col justify-between">
+              <div class="space-y-2">
+                <h4 class="text-lg font-bold text-white group-hover:text-brand-cyan transition-colors">
+                  Command Center & Security Airlock
+                </h4>
+                <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                  Continuous 24/7/365 telemetry monitoring by licensed datacenter engineers. Biometric retina and fingerprint mantrap vestibules, AI thermal video perimeter surveillance, and armed physical presence.
+                </p>
+              </div>
+
+              <div class="pt-3 border-t border-slate-800 text-[11px] font-mono text-slate-400 space-y-1">
+                <div class="flex justify-between">
+                  <span>Physical Security:</span>
+                  <span class="text-white">Iris Biometric Mantraps</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Incident Response:</span>
+                  <span class="text-brand-cyan">&lt; 60 Seconds On-Site</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SERVICES SECTION (NAV: Services) -->
+  <section id="services" class="py-24 relative z-10 bg-brand-navy/50 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan text-xs font-mono font-bold uppercase">
+          <i data-lucide="server" class="w-3.5 h-3.5"></i>
+          Enterprise Offerings
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Comprehensive Colocation & Hyperscale Services
+        </h2>
+        <p class="text-slate-400 text-base">
+          From single high-density AI cabinets to multi-megawatt private vaults, our modular architecture scales with your most demanding compute infrastructure.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Service 1 -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 relative group">
+          <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 flex items-center justify-center text-brand-cyan mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="cpu" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">High-Density AI Colocation</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            Purpose-built cabinets supporting up to 120 kW per rack with direct liquid cooling manifolds for LLM training clusters and dense GPU inference.
+          </p>
+          <ul class="space-y-2 text-xs font-mono text-slate-400 border-t border-slate-800 pt-3">
+            <li class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+              <span>NVIDIA Blackwell & H100 ready</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+              <span>Liquid-to-chip CDU connectivity</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 relative group">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-400/30 flex items-center justify-center text-blue-400 mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="shield" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Private Cages & Dedicated Suites</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            Custom-partitioned private cages and autonomous wholesale suites with dedicated biometric access control and segregated power distribution.
+          </p>
+          <ul class="space-y-2 text-xs font-mono text-slate-400 border-t border-slate-800 pt-3">
+            <li class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+              <span>Heavy-gauge anti-intrusion mesh</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+              <span>Dedicated substation transformers</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 relative group">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-400/30 flex items-center justify-center text-emerald-400 mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="git-branch" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Direct Cloud On-Ramps</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            Sub-millisecond cross-connects to AWS Direct Connect, Azure ExpressRoute, Google Cloud Interconnect, and major financial peering exchanges.
+          </p>
+          <ul class="space-y-2 text-xs font-mono text-slate-400 border-t border-slate-800 pt-3">
+            <li class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+              <span>500+ on-net carrier network</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+              <span>Sub-0.5ms metro latency</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 relative group">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-400/30 flex items-center justify-center text-purple-400 mb-5 group-hover:scale-110 transition-transform">
+            <i data-lucide="life-buoy" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Disaster Recovery & Remote Hands</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            24/7/365 certified hardware replacement, fiber cross-connect patching, cold-swapping, and high-availability disaster recovery command suites.
+          </p>
+          <ul class="space-y-2 text-xs font-mono text-slate-400 border-t border-slate-800 pt-3">
+            <li class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+              <span>15-minute emergency SLA</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+              <span>Certified PE engineers on-site</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INFRASTRUCTURE SECTION (NAV: Infrastructure) -->
+  <section id="infrastructure" class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan text-xs font-mono font-bold uppercase">
+          <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+          Fault-Tolerant Engineering
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Tier IV Fault-Tolerant Infrastructure
+        </h2>
+        <p class="text-slate-400 text-base">
+          Compartmentalized independent systems where no single failure or maintenance event will ever take your critical IT workloads offline.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <div class="glass-card rounded-2xl p-7 space-y-4 border border-slate-800">
+          <div class="flex items-center gap-3 text-brand-cyan font-mono text-xs font-bold">
+            <i data-lucide="zap" class="w-5 h-5"></i>
+            <span>ELECTRICAL (2N+1)</span>
+          </div>
+          <h3 class="text-xl font-bold text-white">Dual Substation Grids</h3>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Directly fed by two autonomous 34.5kV utility substations with independent underground conduits. Backed by rotary flywheel kinetic UPS systems and N+2 diesel generators with 72-hr continuous on-site fuel.
+          </p>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs font-mono text-brand-cyan">
+            Continuous STS zero-break transfer (&lt;0.0ms)
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-7 space-y-4 border border-slate-800">
+          <div class="flex items-center gap-3 text-blue-400 font-mono text-xs font-bold">
+            <i data-lucide="snowflake" class="w-5 h-5"></i>
+            <span>THERMAL (PUE &lt; 1.2)</span>
+          </div>
+          <h3 class="text-xl font-bold text-white">Direct Liquid & Hybrid Cooling</h3>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Chilled water loops with magnetic-bearing chillers and thermal storage tanks ensuring uninterrupted cooling ride-through during utility outages. Up to 120kW direct liquid heat extraction per rack.
+          </p>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs font-mono text-emerald-400">
+            PUE 1.118 annualized efficiency
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-7 space-y-4 border border-slate-800">
+          <div class="flex items-center gap-3 text-purple-400 font-mono text-xs font-bold">
+            <i data-lucide="git-commit" class="w-5 h-5"></i>
+            <span>CONNECTIVITY (CARRIER NEUTRAL)</span>
+          </div>
+          <h3 class="text-xl font-bold text-white">Quad Meet-Me-Rooms</h3>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Four geographically diverse Point-of-Entry (PoE) fiber vaults connecting to 500+ telecom carriers and major internet exchanges with sub-millisecond round-trip times to major financial centers.
+          </p>
+          <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs font-mono text-brand-cyan">
+            Zero packet loss 800Gbps cross-connects
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECURITY SECTION (NAV: Security) -->
+  <section id="security" class="py-24 relative z-10 bg-brand-navy/40 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-6 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-400 text-xs font-mono font-bold uppercase">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+            MILITARY-GRADE DEFENSE
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Multi-Layered 6-Zone Physical & Biometric Security
+          </h2>
+
+          <p class="text-slate-300 text-base leading-relaxed">
+            Our facilities follow strict defense-grade containment protocols. Every square meter is monitored by 24/7/365 armed personnel and audited by continuous automated biometric verification.
+          </p>
+
+          <div class="space-y-4 pt-2">
+            
+            <div class="flex items-start gap-4 p-3.5 rounded-xl bg-slate-900/70 border border-slate-800">
+              <div class="p-2 rounded-lg bg-brand-cyan/10 text-brand-cyan mt-0.5 shrink-0">
+                <i data-lucide="scan-face" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="text-white font-bold text-sm">Iris Scanning & Anti-Tailgating Mantraps</h4>
+                <p class="text-slate-400 text-xs mt-1">Dual-factor biometric authentication required at every containment perimeter, with interlocked weight-calibrated airlocks.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4 p-3.5 rounded-xl bg-slate-900/70 border border-slate-800">
+              <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 mt-0.5 shrink-0">
+                <i data-lucide="cctv" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="text-white font-bold text-sm">360° AI Thermal Perimeter Detection</h4>
+                <p class="text-slate-400 text-xs mt-1">K12-rated anti-ram crash barriers, LiDAR perimeter intrusion tripwires, and 90-day 4K CCTV digital retention.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4 p-3.5 rounded-xl bg-slate-900/70 border border-slate-800">
+              <div class="p-2 rounded-lg bg-purple-500/10 text-purple-400 mt-0.5 shrink-0">
+                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="text-white font-bold text-sm">24/7/365 On-site Tactical Armed Response</h4>
+                <p class="text-slate-400 text-xs mt-1">Zero unescorted visitors permitted inside server suites. Full physical chain of custody logs for every hardware installation.</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="lg:col-span-6">
+          <div class="glass-card rounded-2xl p-6 sm:p-8 border border-brand-cyan/30 relative">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+              <span class="font-mono text-xs font-bold text-white flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-emerald animate-ping"></span>
+                <span>SECURITY ZONE MATRIX (ZONES 1 - 6)</span>
+              </span>
+              <span class="text-xs font-mono text-brand-cyan">DEFCON 1 READY</span>
+            </div>
+
+            <div class="space-y-3 mt-6 font-mono text-xs">
+              <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800 flex justify-between items-center">
+                <span>Zone 1: K12 Anti-Ram Crash Perimeter Fence</span>
+                <span class="text-emerald-400 font-bold">SECURED</span>
+              </div>
+              <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800 flex justify-between items-center">
+                <span>Zone 2: Armed Guard Guardhouse & Vehicle Traps</span>
+                <span class="text-emerald-400 font-bold">ACTIVE</span>
+              </div>
+              <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800 flex justify-between items-center">
+                <span>Zone 3: Biometric Iris Building Access Vestibule</span>
+                <span class="text-emerald-400 font-bold">LOCKED</span>
+              </div>
+              <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800 flex justify-between items-center">
+                <span>Zone 4: Weight-Sensitive Mantrap Airlocks</span>
+                <span class="text-emerald-400 font-bold">INTERLOCKED</span>
+              </div>
+              <div class="p-3 rounded-lg bg-slate-900/80 border border-slate-800 flex justify-between items-center">
+                <span>Zone 5: Private Data Hall Fingerprint Verification</span>
+                <span class="text-emerald-400 font-bold">LOGGED</span>
+              </div>
+              <div class="p-3 rounded-lg bg-slate-900/80 border border-brand-cyan/40 flex justify-between items-center text-white">
+                <span class="font-bold">Zone 6: Locking Cabinet Biometric Handles</span>
+                <span class="text-brand-cyan font-bold">MONITORED</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRICING / SOLUTIONS SECTION (NAV: Pricing/Solutions) -->
+  <section id="pricing" class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan text-xs font-mono font-bold uppercase">
+          <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+          Transparent Enterprise Solutions
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Custom Colocation Solutions & Estimator
+        </h2>
+        <p class="text-slate-400 text-base">
+          Tailored capacity plans engineered for single cabinet colocation, AI high-density pods, and multi-megawatt wholesale leases.
+        </p>
+      </div>
+
+      <!-- 3 Tiered Solution Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        
+        <!-- Plan 1 -->
+        <div class="glass-card rounded-2xl p-7 border border-slate-800 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="font-mono text-xs font-bold text-slate-400">ENTERPRISE STANDARD</div>
+            <h3 class="text-2xl font-bold text-white">Colo Cabinets</h3>
+            <div class="text-3xl font-extrabold text-white font-mono">$1,450 <span class="text-xs font-normal text-slate-400">/ rack / mo</span></div>
+            <p class="text-xs text-slate-300">Ideal for enterprise IT, disaster recovery, and edge connectivity.</p>
+            <ul class="space-y-2.5 text-xs font-mono text-slate-400 border-t border-slate-800 pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> 5 kW – 15 kW Power per Rack</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> 2(N+1) Redundant Dual Bus A+B</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> 99.999% Availability SLA</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> 1 Gbps Direct Cloud Cross-Connect</li>
+            </ul>
+          </div>
+          <a href="#contact-quote" class="mt-8 w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono text-xs font-bold text-center border border-slate-700 hover:border-slate-500 transition-all">
+            Get Cabinet Quote
+          </a>
+        </div>
+
+        <!-- Plan 2: High-Density AI (Featured) -->
+        <div class="glass-card rounded-2xl p-7 border-2 border-brand-cyan relative flex flex-col justify-between shadow-[0_0_35px_rgba(0,240,255,0.2)]">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-brand-cyan text-brand-darkest font-mono text-[10px] font-extrabold tracking-wider">
+            MOST POPULAR FOR AI & HPC
+          </div>
+          <div class="space-y-4">
+            <div class="font-mono text-xs font-bold text-brand-cyan">HIGH-DENSITY COMPUTE</div>
+            <h3 class="text-2xl font-bold text-white">AI Pods / Cages</h3>
+            <div class="text-3xl font-extrabold text-white font-mono">$3,850 <span class="text-xs font-normal text-slate-400">/ rack / mo</span></div>
+            <p class="text-xs text-slate-300">Engineered for H100/H200 liquid cooled pods and training clusters.</p>
+            <ul class="space-y-2.5 text-xs font-mono text-slate-300 border-t border-slate-800 pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> Up to 120 kW / rack liquid immersion</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> Direct CDU Secondary Fluid Network</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> 800Gbps InfiniBand trunk routing</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> Dedicated biometric cage enclosure</li>
+            </ul>
+          </div>
+          <a href="#contact-quote" class="mt-8 w-full py-3 rounded-xl bg-gradient-to-r from-brand-cyan to-blue-600 text-brand-darkest hover:text-black font-mono text-xs font-bold text-center shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all">
+            Deploy AI Capacity
+          </a>
+        </div>
+
+        <!-- Plan 3: Wholesale Hyperscale -->
+        <div class="glass-card rounded-2xl p-7 border border-slate-800 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="font-mono text-xs font-bold text-slate-400">HYPERSCALE WHOLESALE</div>
+            <h3 class="text-2xl font-bold text-white">Dedicated Vault</h3>
+            <div class="text-3xl font-extrabold text-white font-mono">Custom <span class="text-xs font-normal text-slate-400">/ MW / mo</span></div>
+            <p class="text-xs text-slate-300">Custom build-to-suit data halls with dedicated utility substations.</p>
+            <ul class="space-y-2.5 text-xs font-mono text-slate-400 border-t border-slate-800 pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> 1 MW to 25+ MW contiguous capacity</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> Custom mechanical PE engineering</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> Dedicated disaster command suites</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-cyan"></i> Dark fiber metro ring interconnect</li>
+            </ul>
+          </div>
+          <a href="#contact-quote" class="mt-8 w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono text-xs font-bold text-center border border-slate-700 hover:border-slate-500 transition-all">
+            Consult Chief Architect
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPLIANCE SECTION (NAV: Compliance) -->
+  <section id="compliance" class="py-24 relative z-10 bg-brand-navy/30 border-y border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan text-xs font-mono font-bold uppercase">
+          <i data-lucide="award" class="w-3.5 h-3.5"></i>
+          Audit & Regulatory Certifications
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Enterprise Compliance & Tier Certification
+        </h2>
+        <p class="text-slate-400 text-base">
+          Audited continuously by third-party accreditors to satisfy global banking, sovereign healthcare, and federal government mandates.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center font-mono">
+        
+        <div class="glass-card rounded-2xl p-5 border border-brand-cyan/30 space-y-2">
+          <div class="text-brand-cyan font-bold text-lg">TIER IV</div>
+          <div class="text-white text-xs font-bold">Uptime Institute</div>
+          <div class="text-[10px] text-slate-400">Design & Facility</div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-2">
+          <div class="text-blue-400 font-bold text-lg">SOC 2</div>
+          <div class="text-white text-xs font-bold">Type II Audited</div>
+          <div class="text-[10px] text-slate-400">Security & Privacy</div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-2">
+          <div class="text-emerald-400 font-bold text-lg">ISO 27001</div>
+          <div class="text-white text-xs font-bold">ISMS Certified</div>
+          <div class="text-[10px] text-slate-400">Information Security</div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-2">
+          <div class="text-purple-400 font-bold text-lg">PCI-DSS</div>
+          <div class="text-white text-xs font-bold">Version 4.0</div>
+          <div class="text-[10px] text-slate-400">Level 1 Service Provider</div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-2">
+          <div class="text-brand-amber font-bold text-lg">HIPAA</div>
+          <div class="text-white text-xs font-bold">BAA Compliant</div>
+          <div class="text-[10px] text-slate-400">Health Data Security</div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 border border-emerald-500/30 space-y-2">
+          <div class="text-emerald-300 font-bold text-lg">LEED</div>
+          <div class="text-white text-xs font-bold">Platinum</div>
+          <div class="text-[10px] text-emerald-400">100% Carbon Neutral</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- REQUEST A QUOTE / SCHEDULE A TOUR SECTION (NAV: Request a Quote) -->
+  <section id="contact-quote" class="py-24 relative bg-gradient-to-t from-[#040816] via-brand-navy to-brand-darkest border-t border-brand-cyan/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <div class="lg:col-span-5 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan text-xs font-mono font-bold uppercase">
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+            Enterprise Procurement
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Request an Engineering Quote or Private Tour
+          </h2>
+
+          <p class="text-slate-300 text-base leading-relaxed">
+            Our Principal Electrical & Mechanical Infrastructure Architects provide custom single-line diagrams, CFD heat dissipation modeling, and SLA contracts within 2 business hours.
+          </p>
+
+          <div class="p-5 rounded-xl bg-slate-900/90 border border-slate-800 font-mono space-y-2">
+            <div class="text-xs text-slate-400">DIRECT ENTERPRISE DESK:</div>
+            <div class="text-xl font-bold text-brand-cyan">+1 (800) 843-7483 [TIER-IV]</div>
+            <div class="text-[11px] text-slate-500">Secure Dispatch: enterprise-solutions@aetheris-nexus.com</div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="glass-card rounded-2xl p-6 sm:p-10 border border-brand-cyan/40 relative shadow-2xl">
+            
+            <h3 class="text-xl font-bold text-white mb-2">Request Detailed RFP / Facility Escort</h3>
+            <p class="text-xs text-slate-400 font-mono mb-6">Guaranteed 2-hour response from Lead Technical Director.</p>
+
+            <form id="quote-form" onsubmit="handleQuoteSubmit(event)" class="space-y-4">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-xs font-mono text-slate-300">Full Name *</label>
+                  <input type="text" required placeholder="Alex Morgan" class="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-cyan text-sm">
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-xs font-mono text-slate-300">Corporate Email *</label>
+                  <input type="email" required placeholder="alex@enterprise.com" class="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-cyan text-sm">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="text-xs font-mono text-slate-300">Organization / Company *</label>
+                  <input type="text" required placeholder="Hyperscale AI Corp" class="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-cyan text-sm">
+                </div>
+
+                <div class="space-y-1.5">
+                  <label class="text-xs font-mono text-slate-300">Estimated Power & Footprint *</label>
+                  <select class="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white focus:outline-none focus:border-brand-cyan text-sm">
+                    <option>1 - 5 Racks (Under 50 kW)</option>
+                    <option>Private Cage (50 kW - 250 kW)</option>
+                    <option>AI Supercluster Pod (250 kW - 1 MW Liquid Cooled)</option>
+                    <option>Dedicated Hyperscale Vault (1 MW - 25+ MW)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="space-y-1.5">
+                <label class="text-xs font-mono text-slate-300">Project Requirements & Timeline</label>
+                <textarea rows="3" placeholder="Describe GPU architectures (H100/Blackwell), carrier cross-connects, or schedule tour date..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-cyan text-sm"></textarea>
+              </div>
+
+              <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-brand-cyan to-blue-600 text-brand-darkest hover:text-black font-mono font-bold text-sm tracking-wider shadow-[0_0_25px_rgba(0,240,255,0.4)] hover:shadow-[0_0_35px_rgba(0,240,255,0.65)] transition-all flex items-center justify-center gap-2">
+                <i data-lucide="send" class="w-4 h-4"></i>
+                <span>REQUEST IMMEDIATE PROPOSAL & TOUR CLEARANCE</span>
+              </button>
+
+            </form>
+
+            <div id="quote-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-center font-mono text-xs">
+              ✓ Proposal request logged. Security clearance packet and pricing schedule dispatched to your email.
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#02050E] border-t border-slate-800 text-slate-400 font-mono text-xs pt-16 pb-12 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-slate-800/80">
+        
+        <div class="lg:col-span-2 space-y-4">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-brand-cyan/20 border border-brand-cyan/50 flex items-center justify-center text-brand-cyan font-bold">
+              IV
+            </div>
+            <span class="text-white text-lg font-bold tracking-wider font-sans">AETHERIS NEXUS-IV</span>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed max-w-sm">
+            Hyperscale Tier IV data center facilities engineered for 99.999% uptime, liquid immersion AI clusters, and zero-latency enterprise interconnects.
+          </p>
+          <div class="flex items-center gap-2 text-brand-emerald">
+            <span class="w-2 h-2 rounded-full bg-brand-emerald"></span>
+            <span>ALL 18 GLOBAL FACILITIES 100% OPERATIONAL</span>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-white font-bold tracking-wider uppercase text-xs">Solutions</div>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="#services" class="hover:text-brand-cyan">AI GPU Colocation</a></li>
+            <li><a href="#services" class="hover:text-brand-cyan">Private Secure Cages</a></li>
+            <li><a href="#services" class="hover:text-brand-cyan">Direct Cloud On-Ramps</a></li>
+            <li><a href="#services" class="hover:text-brand-cyan">Disaster Recovery Suites</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-white font-bold tracking-wider uppercase text-xs">Infrastructure</div>
+          <ul class="space-y-2 text-slate-400">
+            <li><a href="#infrastructure" class="hover:text-brand-cyan">2(N+1) Power Grid</a></li>
+            <li><a href="#infrastructure" class="hover:text-brand-cyan">Liquid Immersion Cooling</a></li>
+            <li><a href="#security" class="hover:text-brand-cyan">Biometric Iris Mantraps</a></li>
+            <li><a href="#compliance" class="hover:text-brand-cyan">Tier IV Verification</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-white font-bold tracking-wider uppercase text-xs">Emergency NOC</div>
+          <ul class="space-y-2 text-slate-400">
+            <li>NOC Hotline: +1 (800) 843-7483</li>
+            <li>Direct Telemetry API</li>
+            <li>BGP AS Number: AS64496</li>
+            <li>Client Status Portal</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+        <div>
+          © 2026 Aetheris Nexus-IV Hyperscale Data Systems Inc. All rights reserved.
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="#" class="hover:text-slate-300">Privacy Policy</a>
+          <a href="#" class="hover:text-slate-300">Service Level Agreement (SLA)</a>
+          <a href="#" class="hover:text-slate-300">Security Whitepaper</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- PORTAL LOGIN MODAL (NAV: Portal Login) -->
+  <div id="portal-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-md w-full border border-brand-cyan/40 relative shadow-2xl font-mono">
+      <button onclick="closeModal('portal-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="p-2.5 rounded-xl bg-brand-cyan/15 text-brand-cyan border border-brand-cyan/30">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-white">Client Portal Login</h3>
+          <p class="text-xs text-slate-400">FIDO2 / Hardware Security Key</p>
+        </div>
+      </div>
+
+      <form onsubmit="event.preventDefault(); alert('Authentication challenge initiated with security key.');" class="space-y-4 text-xs mt-4">
+        <div class="space-y-1">
+          <label class="text-slate-300">Enterprise Client ID</label>
+          <input type="text" placeholder="NOC-ORG-99201" class="w-full px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white focus:border-brand-cyan focus:outline-none">
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-slate-300">Master Passphrase</label>
+          <input type="password" placeholder="••••••••••••••••" class="w-full px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white focus:border-brand-cyan focus:outline-none">
+        </div>
+
+        <button type="button" class="w-full py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 flex items-center justify-center gap-2">
+          <i data-lucide="key" class="w-4 h-4 text-brand-cyan"></i> Tap YubiKey / WebAuthn Token
+        </button>
+
+        <button type="submit" class="w-full py-3 rounded-lg bg-brand-cyan text-brand-darkest font-bold hover:bg-brand-cyanHover transition-all mt-2">
+          AUTHENTICATE SESSION
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT & THREE.JS 3D DATA CENTER ENGINE -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // UTC Clock
+    function updateClock() {
+      const now = new Date();
+      const utcString = now.toUTCString().split(' ')[4];
+      const clockEl = document.getElementById('live-utc-clock');
+      if (clockEl) clockEl.textContent = `UTC ${utcString}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Sensor Jitter Simulation
+    setInterval(() => {
+      const tempEl = document.getElementById('metric-temp');
+      const pueEl = document.getElementById('metric-pue');
+      if (tempEl) tempEl.textContent = (19.3 + Math.random() * 0.3).toFixed(1);
+      if (pueEl) pueEl.textContent = (1.117 + Math.random() * 0.003).toFixed(3);
+    }, 2800);
+
+    // Mobile Menu
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+      mobileBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+
+    // Modal Helpers
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('hidden');
+    }
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function handleQuoteSubmit(e) {
+      e.preventDefault();
+      const s = document.getElementById('quote-success');
+      if (s) s.classList.remove('hidden');
+    }
+
+    // ==========================================
+    // THREE.JS INTERACTIVE 3D DATA CENTER ROOM
+    // ==========================================
+    let scene, camera, renderer, controls;
+    let interactiveRacks = [];
+    const container = document.getElementById('canvas-container');
+    const canvas = document.getElementById('datacenter-3d-canvas');
+
+    function initThreeJS() {
+      if (!canvas || !container) return;
+
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      // 1. Scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x040816);
+      scene.fog = new THREE.FogExp2(0x040816, 0.035);
+
+      // 2. Camera
+      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+      camera.position.set(0, 4.5, 12);
+
+      // 3. Renderer
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+
+      // 4. Controls
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxPolarAngle = Math.PI / 2 - 0.02; // Don't go below floor
+      controls.minDistance = 3;
+      controls.maxDistance = 22;
+      controls.target.set(0, 1.8, 0);
+
+      // 5. Lighting
+      const ambientLight = new THREE.AmbientLight(0x0d1f4d, 1.8);
+      scene.add(ambientLight);
+
+      // Overhead Cyan Light running along Cold Aisle
+      const coldAisleLight = new THREE.PointLight(0x00f0ff, 2.5, 18);
+      coldAisleLight.position.set(0, 4.2, 0);
+      scene.add(coldAisleLight);
+
+      const backLight = new THREE.PointLight(0x3a86ff, 1.8, 15);
+      backLight.position.set(0, 3, -6);
+      scene.add(backLight);
+
+      // 6. Polished Raised Floor Grid
+      const floorGeo = new THREE.PlaneGeometry(30, 30);
+      const floorMat = new THREE.MeshStandardMaterial({
+        color: 0x060b1e,
+        roughness: 0.25,
+        metalness: 0.8
+      });
+      const floor = new THREE.Mesh(floorGeo, floorMat);
+      floor.rotation.x = -Math.PI / 2;
+      scene.add(floor);
+
+      // Floor Grid helper
+      const grid = new THREE.GridHelper(30, 30, 0x00f0ff, 0x112244);
+      grid.position.y = 0.01;
+      scene.add(grid);
+
+      // 7. Cold Aisle Glass Containment Roof
+      const roofGeo = new THREE.BoxGeometry(3.6, 0.08, 12);
+      const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0x00f0ff,
+        transparent: true,
+        opacity: 0.35,
+        roughness: 0.1,
+        metalness: 0.1,
+        transmission: 0.7
+      });
+      const roof = new THREE.Mesh(roofGeo, glassMat);
+      roof.position.set(0, 3.4, 0);
+      scene.add(roof);
+
+      // Overhead Liquid Cooling Conduits (Neon Cyan tubes)
+      const tubeGeo = new THREE.CylinderGeometry(0.08, 0.08, 12, 16);
+      const tubeMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+      
+      const tube1 = new THREE.Mesh(tubeGeo, tubeMat);
+      tube1.rotation.x = Math.PI / 2;
+      tube1.position.set(-1.1, 3.6, 0);
+      scene.add(tube1);
+
+      const tube2 = new THREE.Mesh(tubeGeo, tubeMat);
+      tube2.rotation.x = Math.PI / 2;
+      tube2.position.set(1.1, 3.6, 0);
+      scene.add(tube2);
+
+      // 8. Build Server Racks (2 rows: Left and Right facing cold aisle)
+      createRackRow(-2.3, true);  // Left row facing +X
+      createRackRow(2.3, false);  // Right row facing -X
+
+      // 9. Resize handler
+      window.addEventListener('resize', onWindowResize);
+
+      // 10. Click detection on racks
+      canvas.addEventListener('click', onCanvasClick);
+
+      // Animation Loop
+      animate();
+    }
+
+    function createRackRow(xPos, isLeft) {
+      const rackCount = 5;
+      const rackWidth = 1.0;
+      const rackHeight = 3.0;
+      const rackDepth = 1.3;
+      const spacing = 1.6;
+
+      const rackFrameMat = new THREE.MeshStandardMaterial({
+        color: 0x0a1024,
+        roughness: 0.4,
+        metalness: 0.85
+      });
+
+      const serverBladeMat = new THREE.MeshStandardMaterial({
+        color: 0x111c38,
+        roughness: 0.5,
+        metalness: 0.6
+      });
+
+      for (let i = 0; i < rackCount; i++) {
+        const zPos = (i - Math.floor(rackCount / 2)) * spacing;
+
+        const rackGroup = new THREE.Group();
+        rackGroup.position.set(xPos, rackHeight / 2, zPos);
+
+        // Rack Main Outer Cabinet
+        const cabinetGeo = new THREE.BoxGeometry(rackDepth, rackHeight, rackWidth);
+        const cabinet = new THREE.Mesh(cabinetGeo, rackFrameMat);
+        rackGroup.add(cabinet);
+
+        // Server Blades inside
+        const bladeSlots = 8;
+        for (let b = 0; b < bladeSlots; b++) {
+          const bladeGeo = new THREE.BoxGeometry(rackDepth * 0.9, 0.22, rackWidth * 0.85);
+          const blade = new THREE.Mesh(bladeGeo, serverBladeMat);
+          blade.position.y = -1.1 + b * 0.32;
+          rackGroup.add(blade);
+
+          // LED strips on blade front facing cold aisle
+          const ledGeo = new THREE.BoxGeometry(0.04, 0.04, 0.7);
+          const ledMat = new THREE.MeshBasicMaterial({
+            color: (b % 2 === 0) ? 0x00f0ff : 0x10b981
+          });
+          const led = new THREE.Mesh(ledGeo, ledMat);
+          const faceOffset = isLeft ? (rackDepth / 2 + 0.02) : -(rackDepth / 2 + 0.02);
+          led.position.set(faceOffset, blade.position.y, 0);
+          rackGroup.add(led);
+        }
+
+        // Add metadata for click HUD
+        rackGroup.userData = {
+          rackId: `RACK-AI-${isLeft ? 'A' : 'B'}${i + 1}`,
+          power: `${(85 + i * 6.5).toFixed(1)} kW`,
+          cooling: (i % 2 === 0) ? 'Direct Liquid Immersion' : 'Rear-Door Heat Exchanger'
+        };
+
+        interactiveRacks.push(cabinet);
+        cabinet.userData = rackGroup.userData;
+
+        scene.add(rackGroup);
+      }
+    }
+
+    function onCanvasClick(event) {
+      const rect = canvas.getBoundingClientRect();
+      const mouse = new THREE.Vector2();
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+
+      const intersects = raycaster.intersectObjects(interactiveRacks);
+      if (intersects.length > 0) {
+        const hit = intersects[0].object;
+        if (hit.userData && hit.userData.rackId) {
+          document.getElementById('popup-rack-id').textContent = hit.userData.rackId;
+          document.getElementById('popup-power').textContent = hit.userData.power;
+          document.getElementById('popup-cooling').textContent = hit.userData.cooling;
+
+          const popup = document.getElementById('rack-inspect-popup');
+          popup.classList.remove('opacity-0');
+          popup.classList.add('opacity-100');
+        }
+      }
+    }
+
+    function onWindowResize() {
+      if (!container || !camera || !renderer) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+
+    function setCameraPreset(preset) {
+      if (preset === 'isometric') {
+        camera.position.set(7, 5, 8);
+        controls.target.set(0, 1.5, 0);
+      } else if (preset === 'aisle') {
+        camera.position.set(0, 1.8, 5.5);
+        controls.target.set(0, 1.8, -2);
+      } else if (preset === 'top') {
+        camera.position.set(0, 11, 0.1);
+        controls.target.set(0, 0, 0);
+      }
+    }
+
+    function resetCamera() {
+      camera.position.set(0, 4.5, 12);
+      controls.target.set(0, 1.8, 0);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (controls) controls.update();
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+      }
+    }
+
+    // Initialize 3D on load
+    window.addEventListener('DOMContentLoaded', initThreeJS);
+  </script>
+</body>
+</html>
